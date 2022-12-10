@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react"
+import React, {useState, useEffect,useRef} from "react"
 import './App.css'
 
 
@@ -10,6 +10,7 @@ function App() {
     const [timeRemaining, setTimeRemaining] = useState(STARTING_TIME)
     const [isTimeRunning, setIsTimeRunning] = useState(false)
     const [wordCount, setWordCount] = useState(0)
+    const textBoxRef = useRef(null)
     
     function handleChange(e) {
         const {value} = e.target
@@ -25,6 +26,8 @@ function App() {
         setIsTimeRunning(true)
         setTimeRemaining(STARTING_TIME)
         setText("")
+        textBoxRef.current.disabled = false
+        textBoxRef.current.focus()
     }
     
     function endGame() {
@@ -32,7 +35,7 @@ function App() {
         setWordCount(calculateWordCount(text))
     }
     
-    // https://www.google.com/search?q=Disable+button+in+react
+  
     
     useEffect(() => {
         if(isTimeRunning && timeRemaining > 0) {
@@ -51,11 +54,14 @@ function App() {
                 onChange={handleChange}
                 value={text}
                 disabled={!isTimeRunning}
+                ref={textBoxRef}
             />
             <h4>Time remaining: {timeRemaining}</h4>
             <button 
                 onClick={startGame}
                 disabled={isTimeRunning}
+                
+                
             >
                 Start
             </button>
